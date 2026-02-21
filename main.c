@@ -2,11 +2,11 @@
 #include <stdint.h>
 #include "stm32f4xx.h"
 #include "main.h"
+#include "dds.h"
 
 uint32_t ticks;
-uint32_t button_timestamp;
-uint32_t button_expiration = 30; //button blocking time in ms
-int button_pressed = 0;
+uint16_t v_out;
+int dds_updated = 0;
 
 int main(void){
     clock_setup();
@@ -15,11 +15,32 @@ int main(void){
     SysTick_Config(100000);
     __enable_irq();
     while(1){
-        printf("Hello World!\n");
-        delay_ms(100);
+        if(dds_updated == 1){
+            printf(">out:%d\r\n", v_out);
+            dds_updated = 0;
+        }
     }
     
     
+}
+
+void tim9_init(void){
+    RCC->APB2ENR |= RCC_APB2ENR_TIM9EN;
+    asm("nop"); //delay 1+ppre1 cycles as per errata
+    asm("nop");
+    asm("nop");
+
+    TIM9->PSC = 0; //set prescaler to zero
+    TIM9->ARR = 200-1; //set reload value to overlfow at 200, 100MHz/200 = 500kHz
+    TIM9->DIER |= TIM_DIER_UIE; //update interrupt enable
+    TIM9->CR1 |= TIM_CR1_CEN; //enable counter
+    NVIC_EnableIRQ(TIM1_BRK_TIM9_IRQn); //enable timer 9 uodate interrupt
+}
+
+void TIM1_BRK_TIM9_IRQHandler(void){
+    TIM9->SR &= ~TIM_SR_UIF; //clear update interrupt flag
+    v_out= dds(858);
+    dds_updated = 1;
 }
 
 void clock_setup(void){
@@ -89,6 +110,7 @@ void peripheral_init(void){
     asm("nop");
 
     uart_init(115200);
+    tim9_init();
 }
 
 
