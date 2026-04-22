@@ -1,4 +1,1 @@
-*.bin
-*.hex
-*.elf
-.vscode/
+build/
