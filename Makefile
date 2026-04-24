@@ -38,8 +38,9 @@ BUILD_DIR = build
 C_SOURCES =  \
 Core/Src/main.c \
 Core/Src/gpio.c \
-dds.c\
-dac.c\
+Core/Src/dds.c\
+Core/Src/dac.c\
+Core/Src/tim.c\
 Core/Src/system_stm32h7xx.c \
 Core/Src/sysmem.c \
 Core/Src/syscalls.c\

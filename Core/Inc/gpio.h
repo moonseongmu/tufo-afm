@@ -10,6 +10,7 @@ enum GPIO_Pin{
     GPIO_Pin_8 = 256, GPIO_Pin_9 = 512, GPIO_Pin_10 = 1024, GPIO_Pin_11 = 2048,
     GPIO_Pin_12 = 4096, GPIO_Pin_13 = 8192, GPIO_Pin_14 = 16384, GPIO_Pin_15 = 32768
 };
+void gpio_init(void);
 void gpio_clear_pin(GPIO_TypeDef* GPIOx, enum GPIO_Pin Pin);
 void gpio_set_pin(GPIO_TypeDef* GPIOx, enum GPIO_Pin Pin);
 void gpio_toggle_pin(GPIO_TypeDef* GPIOx, enum GPIO_Pin Pin);
