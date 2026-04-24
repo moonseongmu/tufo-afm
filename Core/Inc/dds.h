@@ -1,6 +1,9 @@
 #ifndef DDS_H
 #define DDS_H
 
+#include "stm32h7xx.h"
+#include "main.h"
+
 extern uint32_t tuning_word;
 extern uint32_t phase_accumulator;
 uint8_t dds(uint32_t tuning_word);

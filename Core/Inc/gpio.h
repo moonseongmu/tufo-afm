@@ -2,8 +2,9 @@
 #ifndef GPIO_H
 #define GPIO_H
 
-
+#include "stm32h7xx.h"
 #include "main.h"
+
 enum GPIO_Pin{
     GPIO_Pin_0 = 1, GPIO_Pin_1 = 2, GPIO_Pin_2 = 4, GPIO_Pin_3 = 8,
     GPIO_Pin_4 = 16, GPIO_Pin_5 = 32, GPIO_Pin_6 = 64, GPIO_Pin_7 = 128,

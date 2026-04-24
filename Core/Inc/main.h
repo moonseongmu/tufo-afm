@@ -5,6 +5,10 @@
 #include <stdint.h>
 
 #include "stm32h7xx.h"
+#include "gpio.h"
+#include "dds.h"
+#include "dac.h"
+#include "tim.h"
 
 void clock_config(void);
 void peripherals_init(void);

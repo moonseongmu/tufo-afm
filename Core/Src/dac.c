@@ -1,6 +1,5 @@
 #include <stdint.h>
 #include "dac.h"
-#include "stm32h7xx.h"
 
 void dac_init(void){
     SET_BIT(RCC->APB1LENR, RCC_APB1LENR_DAC12EN); //enable dac
