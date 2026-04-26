@@ -3,6 +3,7 @@
 #define BLOCK_SIZE 512
 
 uint32_t ticks;
+uint32_t prev_ticks;
 
 uint8_t dds_buffer_1[BLOCK_SIZE];
 uint8_t dds_buffer_2[BLOCK_SIZE];
@@ -11,50 +12,57 @@ uint8_t dac_out_buffer_2[BLOCK_SIZE];
 
 uint8_t active_buffer = 1;
 uint32_t block_counter = 0;
+uint8_t tim13_update = 0;
 
 int main(void){
     clock_config();
     peripherals_init();
     __enable_irq();
-    tuning_word = freq_to_tuning_word(400, 500000);
-    while (1)
-    {
-        gpio_toggle_pin(GPIOE, GPIO_Pin_3);
-        delay_ms(500);
+    tuning_word = freq_to_tuning_word(1000, 100000);
+    while (1){
+        /*if(ticks - prev_ticks >= 500){
+            prev_ticks = ticks;
+            gpio_toggle_pin(GPIOE, GPIO_Pin_3);
+        }*/
+
+        if (tim13_update == 1){
+            gpio_set_pin(GPIOE, GPIO_Pin_3);
+            uint8_t v_out = dds(tuning_word);
+            switch(active_buffer){
+                case 1:
+                    dds_buffer_2[block_counter] = v_out;
+                    dac_out_buffer_2[block_counter] = v_out;
+                    dac_update(dac_out_buffer_1[block_counter]);
+                    break;
+                case 2:
+                    dds_buffer_1[block_counter] = v_out;
+                    dac_out_buffer_1[block_counter] = v_out;
+                    dac_update(dac_out_buffer_2[block_counter]);
+                    break;
+            }
+        
+            if (block_counter < 512){
+                block_counter++;
+            } else { 
+                block_counter = 0;
+                switch(active_buffer){
+                    case 1: 
+                        active_buffer = 2;
+                        break;
+                    case 2: 
+                        active_buffer = 1;
+                        break;
+                }
+            }
+            gpio_clear_pin(GPIOE, GPIO_Pin_3);
+            tim13_update = 0;
+        }
     }
 }
 
 void TIM8_UP_TIM13_IRQHandler(void){
     CLEAR_BIT(TIM8->SR, TIM_SR_UIF);
-    uint8_t v_out = dds(tuning_word);
-    switch(active_buffer){
-        case 1:
-            dds_buffer_2[block_counter] = v_out;
-            dac_out_buffer_2[block_counter] = v_out;
-            dac_update(dac_out_buffer_1[block_counter]);
-            break;
-        case 2:
-            dds_buffer_1[block_counter] = v_out;
-            dac_out_buffer_1[block_counter] = v_out;
-            dac_update(dac_out_buffer_2[block_counter]);
-            break;
-    }
-
-    if (block_counter < 512){
-        block_counter++;
-    } else { 
-        block_counter = 0;
-        switch(active_buffer){
-            case 1: 
-                active_buffer = 2;
-                break;
-            case 2: 
-                active_buffer = 1;
-                break;
-        }
-    }
-    
-
+    tim13_update = 1;
 }
 
 void clock_config(void){
