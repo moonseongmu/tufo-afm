@@ -41,6 +41,7 @@ Core/Src/gpio.c \
 Core/Src/dds.c\
 Core/Src/dac.c\
 Core/Src/tim.c\
+Core/Src/dma.c\
 Core/Src/system_stm32h7xx.c \
 Core/Src/sysmem.c \
 Core/Src/syscalls.c\

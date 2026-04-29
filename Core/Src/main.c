@@ -5,64 +5,64 @@
 uint32_t ticks;
 uint32_t prev_ticks;
 
+uint8_t active_buffer = 1;
+uint32_t block_counter = 0;
+//uint8_t tim8_update = 0;
 uint8_t dds_buffer_1[BLOCK_SIZE];
 uint8_t dds_buffer_2[BLOCK_SIZE];
 uint8_t dac_out_buffer_1[BLOCK_SIZE];
 uint8_t dac_out_buffer_2[BLOCK_SIZE];
 
-uint8_t active_buffer = 1;
-uint32_t block_counter = 0;
-uint8_t tim13_update = 0;
-
 int main(void){
     clock_config();
     peripherals_init();
     __enable_irq();
-    tuning_word = freq_to_tuning_word(1000, 100000);
+    tuning_word = freq_to_tuning_word(100, 1000000);
     while (1){
         /*if(ticks - prev_ticks >= 500){
             prev_ticks = ticks;
             gpio_toggle_pin(GPIOE, GPIO_Pin_3);
         }*/
-
-        if (tim13_update == 1){
-            gpio_set_pin(GPIOE, GPIO_Pin_3);
+        
+        while(block_counter < BLOCK_SIZE){
             uint8_t v_out = dds(tuning_word);
             switch(active_buffer){
-                case 1:
-                    dds_buffer_2[block_counter] = v_out;
-                    dac_out_buffer_2[block_counter] = v_out;
-                    dac_update(dac_out_buffer_1[block_counter]);
-                    break;
-                case 2:
-                    dds_buffer_1[block_counter] = v_out;
-                    dac_out_buffer_1[block_counter] = v_out;
-                    dac_update(dac_out_buffer_2[block_counter]);
-                    break;
+            case 1:
+                dds_buffer_2[block_counter] = v_out;
+                dac_out_buffer_2[block_counter] = v_out;
+                break;
+            case 2:
+                dds_buffer_1[block_counter] = v_out;
+                dac_out_buffer_1[block_counter] = v_out;
+                break;
             }
-        
-            if (block_counter < 512){
-                block_counter++;
-            } else { 
-                block_counter = 0;
-                switch(active_buffer){
-                    case 1: 
-                        active_buffer = 2;
-                        break;
-                    case 2: 
-                        active_buffer = 1;
-                        break;
-                }
-            }
-            gpio_clear_pin(GPIOE, GPIO_Pin_3);
-            tim13_update = 0;
+            block_counter++;
         }
+        
+        //tim8_update = 0;
     }
 }
 
+
+/*
 void TIM8_UP_TIM13_IRQHandler(void){
     CLEAR_BIT(TIM8->SR, TIM_SR_UIF);
-    tim13_update = 1;
+    tim8_update = 1;
+} 
+*/
+
+void DMA1_Stream0_IRQHandler(void){
+    switch(active_buffer){
+        case 1:
+            active_buffer = 2;
+            break;
+        case 2:
+            active_buffer = 1;
+            break;
+    }
+    block_counter = 0;
+    gpio_toggle_pin(GPIOE, GPIO_Pin_3);
+    SET_BIT(DMA1->LIFCR, DMA_LIFCR_CTCIF0); //clear transfer complete flag
 }
 
 void clock_config(void){
@@ -104,6 +104,8 @@ void peripherals_init(void){
     gpio_init();
     tim8_init();
     dac_init();
+    dma_init();
+    
 }
 
 void delay_ms(uint32_t millisecs){

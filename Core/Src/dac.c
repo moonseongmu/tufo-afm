@@ -4,7 +4,9 @@
 void dac_init(void){
     SET_BIT(RCC->APB1LENR, RCC_APB1LENR_DAC12EN); //enable dac
     MODIFY_REG(GPIOA->MODER, GPIO_MODER_MODER4, (GPIO_MODER_MODER4_0|GPIO_MODER_MODER4_1)); //set a4 to alternate mode dac1 out1
-
+    SET_BIT(DAC1->CR, DAC_CR_DMAEN1); //enable dma
+    MODIFY_REG(DAC1->CR, DAC_CR_TSEL1, 7 << DAC_CR_TSEL1_Pos); //select trigger 7(tim8 trgo)
+    SET_BIT(DAC1->CR, DAC_CR_TEN1); //trigger enable
     MODIFY_REG(DAC1->MCR, DAC_MCR_MODE1, 0 << DAC_MCR_MODE1_Pos); //set chnl1 as normal mode external pin with buffer
     SET_BIT(DAC1->CR, DAC_CR_EN1); //enable dac channel 1
 }
