@@ -5,7 +5,26 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Cortex Debug",
+            "cwd": "${workspaceFolder}",
+            "executable": "./build/h7_ide.elf",
+            "name": "OpenOCD",
+            "request": "launch",
+            "type": "cortex-debug",
+            "svdFile": "./STM32H743.svd",
+            "toolchainPrefix": "arm-none-eabi",
+            "device": "STM32H743VG",
+            "servertype": "openocd",
+            "configFiles": ["interface/cmsis-dap.cfg", "target/stm32h7x.cfg"],
+            "searchDir": [],
+            "runToEntryPoint": "main",
+            "showDevDebugOutput": "none",
+            "liveWatch": {
+                "enabled": true,
+                "samplesPerSecond": 20
+            }
+        },
+        {
+            "name": "PyOCD",
             "cwd": "${workspaceFolder}",
             "executable": "./build/h7_ide.elf",
             "request": "launch",
@@ -14,11 +33,8 @@
             "servertype": "pyocd",
             "svdFile": "./STM32H743.svd",
             "device": "stm32h743vgtx",
-            "overrideGDBServerStartedRegex": "GDB server listening on port",
-            "liveWatch": {
-                "enabled": true,
-                "samplesPerSecond": 10
-            }
+            "overrideGDBServerStartedRegex": "GDB server listening on port"
+            
         }
     ]
 }
