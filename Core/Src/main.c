@@ -1,7 +1,5 @@
 #include "main.h"
 
-#define BLOCK_SIZE 512
-
 uint32_t ticks;
 uint32_t prev_ticks;
 
