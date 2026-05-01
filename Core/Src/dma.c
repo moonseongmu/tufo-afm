@@ -13,7 +13,7 @@ void dma_init(void){
     MODIFY_REG(DMAMUX1_Channel0->CCR, DMAMUX_CxCR_DMAREQ_ID, 67 << DMAMUX_CxCR_DMAREQ_ID_Pos); //set dac ch1 as req input
     MODIFY_REG(DMA1_Stream0->CR, DMA_SxCR_PL, DMA_SxCR_PL); //set dma priority to very high
     CLEAR_BIT(DMA1_Stream0->FCR, DMA_SxFCR_DMDIS); //direct mode enable
-    MODIFY_REG(DMA1_Stream0->CR, DMA_SxCR_DIR, DMA_SxCR_DIR_1); //memory to periph
+    MODIFY_REG(DMA1_Stream0->CR, DMA_SxCR_DIR, DMA_SxCR_DIR_0); //memory to periph
     SET_BIT(DMA1_Stream0->CR, DMA_SxCR_MINC); //mem increment mode
     CLEAR_BIT(DMA1_Stream0->CR, DMA_SxCR_PINC); //no periph increment
     SET_BIT(DMA1_Stream0->CR, DMA_SxCR_DBM); //double buffer mode
