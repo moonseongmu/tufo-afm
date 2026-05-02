@@ -3,13 +3,13 @@
 uint32_t ticks;
 uint32_t prev_ticks;
 
-uint8_t active_buffer = 1;
+uint8_t current_target = 1;
 uint32_t block_counter = 0;
 //uint8_t tim8_update = 0;
+uint8_t dds_buffer_0[BLOCK_SIZE];
 uint8_t dds_buffer_1[BLOCK_SIZE];
-uint8_t dds_buffer_2[BLOCK_SIZE];
+uint8_t dac_out_buffer_0[BLOCK_SIZE];
 uint8_t dac_out_buffer_1[BLOCK_SIZE];
-uint8_t dac_out_buffer_2[BLOCK_SIZE];
 
 int main(void){
     clock_config();
@@ -17,27 +17,17 @@ int main(void){
     __enable_irq();
     tuning_word = freq_to_tuning_word(100, 1000000);
     while (1){
-        /*if(ticks - prev_ticks >= 500){
-            prev_ticks = ticks;
-            gpio_toggle_pin(GPIOE, GPIO_Pin_3);
-        }*/
-        
         while(block_counter < BLOCK_SIZE){
             uint8_t v_out = dds(tuning_word);
-            switch(active_buffer){
-            case 1:
-                dds_buffer_2[block_counter] = v_out;
-                dac_out_buffer_2[block_counter] = v_out;
-                break;
-            case 2:
+            if(current_target == 0){
                 dds_buffer_1[block_counter] = v_out;
                 dac_out_buffer_1[block_counter] = v_out;
-                break;
+            } else {
+                dds_buffer_0[block_counter] = v_out;
+                dac_out_buffer_0[block_counter] = v_out;
             }
             block_counter++;
         }
-        
-        //tim8_update = 0;
     }
 }
 
@@ -50,17 +40,11 @@ void TIM8_UP_TIM13_IRQHandler(void){
 */
 
 void DMA1_Stream0_IRQHandler(void){
-    switch(active_buffer){
-        case 1:
-            active_buffer = 2;
-            break;
-        case 2:
-            active_buffer = 1;
-            break;
-    }
-    block_counter = 0;
+    current_target = (READ_BIT(DMA1_Stream0->CR, DMA_SxCR_CT) >> DMA_SxCR_CT_Pos);
     gpio_toggle_pin(GPIOE, GPIO_Pin_3);
+    block_counter = 0;
     SET_BIT(DMA1->LIFCR, DMA_LIFCR_CTCIF0); //clear transfer complete flag
+    while(READ_BIT(DMA1->LISR, DMA_LISR_TCIF0) != 0){asm("nop");} //wait until transfer complete flag is cleared
 }
 
 void clock_config(void){
@@ -103,7 +87,6 @@ void peripherals_init(void){
     tim8_init();
     dac_init();
     dma_init();
-    
 }
 
 void delay_ms(uint32_t millisecs){

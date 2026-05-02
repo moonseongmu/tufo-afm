@@ -7,8 +7,8 @@ void dma_init(void){
     CLEAR_BIT(DMA1_Stream0->CR, DMA_SxCR_EN); //disable dma stream
     while(READ_BIT(DMA1_Stream0->CR, DMA_SxCR_EN)){asm("nop");} //wait for dma stream to disable
     WRITE_REG(DMA1_Stream0->PAR, (uint32_t) &(DAC1->DHR8R1)); //dac 8 bit output register
-    WRITE_REG(DMA1_Stream0->M0AR, (uint32_t)&dac_out_buffer_1); //dac output buffer 1
-    WRITE_REG(DMA1_Stream0->M1AR, (uint32_t)&dac_out_buffer_2); //dac output buffer 2
+    WRITE_REG(DMA1_Stream0->M0AR, (uint32_t)&dac_out_buffer_0); //dac output buffer 1
+    WRITE_REG(DMA1_Stream0->M1AR, (uint32_t)&dac_out_buffer_1); //dac output buffer 2
     WRITE_REG(DMA1_Stream0->NDTR, BLOCK_SIZE); //set number of itens to block size;
     MODIFY_REG(DMAMUX1_Channel0->CCR, DMAMUX_CxCR_DMAREQ_ID, 67 << DMAMUX_CxCR_DMAREQ_ID_Pos); //set dac ch1 as req input
     MODIFY_REG(DMA1_Stream0->CR, DMA_SxCR_PL, DMA_SxCR_PL); //set dma priority to very high
@@ -19,6 +19,7 @@ void dma_init(void){
     SET_BIT(DMA1_Stream0->CR, DMA_SxCR_DBM); //double buffer mode
     CLEAR_BIT(DMA1_Stream0->CR, DMA_SxCR_MSIZE); //set byte size for both mmory and peripheral
     CLEAR_BIT(DMA1_Stream0->CR, DMA_SxCR_PSIZE);
+    CLEAR_BIT(DMA1_Stream0->CR, DMA_SxCR_HTIE);
     SET_BIT(DMA1_Stream0->CR, DMA_SxCR_TCIE); //transfer complete interrupt enable
     SET_BIT(DMA1_Stream0->CR, DMA_SxCR_EN); //enable dma
     NVIC_EnableIRQ(DMA1_Stream0_IRQn); //enable stream 0 irq
