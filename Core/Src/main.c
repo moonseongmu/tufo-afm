@@ -5,7 +5,6 @@ uint32_t prev_ticks;
 
 uint8_t current_target = 1;
 uint32_t block_counter = 0;
-//uint8_t tim8_update = 0;
 uint8_t dds_buffer_0[BLOCK_SIZE];
 uint8_t dds_buffer_1[BLOCK_SIZE];
 uint8_t dac_out_buffer_0[BLOCK_SIZE];
@@ -30,14 +29,6 @@ int main(void){
         }
     }
 }
-
-
-/*
-void TIM8_UP_TIM13_IRQHandler(void){
-    CLEAR_BIT(TIM8->SR, TIM_SR_UIF);
-    tim8_update = 1;
-} 
-*/
 
 void DMA1_Stream0_IRQHandler(void){
     current_target = (READ_BIT(DMA1_Stream0->CR, DMA_SxCR_CT) >> DMA_SxCR_CT_Pos);
