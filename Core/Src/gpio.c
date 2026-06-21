@@ -1,24 +1,67 @@
+/* USER CODE BEGIN Header */
+/**
+  ******************************************************************************
+  * @file    gpio.c
+  * @brief   This file provides code for the configuration
+  *          of all used GPIO pins.
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2026 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
+  */
+/* USER CODE END Header */
+
+/* Includes ------------------------------------------------------------------*/
 #include "gpio.h"
 
+/* USER CODE BEGIN 0 */
 
-void gpio_init(void){
-    SET_BIT(RCC->AHB4ENR, RCC_AHB4ENR_GPIOEEN); //enable gpioe
-    MODIFY_REG(GPIOE->MODER, GPIO_MODER_MODER3,GPIO_MODER_MODER3_0); //set e3 to gp output
+/* USER CODE END 0 */
+
+/*----------------------------------------------------------------------------*/
+/* Configure GPIO                                                             */
+/*----------------------------------------------------------------------------*/
+/* USER CODE BEGIN 1 */
+
+/* USER CODE END 1 */
+
+/** Configure pins as
+        * Analog
+        * Input
+        * Output
+        * EVENT_OUT
+        * EXTI
+*/
+void MX_GPIO_Init(void)
+{
+
+  LL_GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+  /* GPIO Ports Clock Enable */
+  LL_AHB4_GRP1_EnableClock(LL_AHB4_GRP1_PERIPH_GPIOE);
+  LL_AHB4_GRP1_EnableClock(LL_AHB4_GRP1_PERIPH_GPIOH);
+  LL_AHB4_GRP1_EnableClock(LL_AHB4_GRP1_PERIPH_GPIOB);
+
+  /**/
+  LL_GPIO_ResetOutputPin(GPIOE, LL_GPIO_PIN_3);
+
+  /**/
+  GPIO_InitStruct.Pin = LL_GPIO_PIN_3;
+  GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
+  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
+  GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
+  LL_GPIO_Init(GPIOE, &GPIO_InitStruct);
+
 }
 
-void gpio_clear_pin(GPIO_TypeDef* GPIOx, enum GPIO_Pin Pin){
-    SET_BIT(GPIOx->BSRR, Pin << GPIO_BSRR_BR0_Pos);
-}
+/* USER CODE BEGIN 2 */
 
-void gpio_set_pin(GPIO_TypeDef* GPIOx, enum GPIO_Pin Pin){
-    SET_BIT(GPIOx->BSRR, Pin << GPIO_BSRR_BS0_Pos);
-}
-
-void gpio_toggle_pin(GPIO_TypeDef* GPIOx, enum GPIO_Pin Pin){
-    if(READ_BIT(GPIOx->ODR, Pin << GPIO_ODR_OD0_Pos)){ //if pin is set
-        gpio_clear_pin(GPIOx, Pin);
-    } else {
-        gpio_set_pin(GPIOx, Pin);
-    }
-    
-}
+/* USER CODE END 2 */

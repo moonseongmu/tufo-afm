@@ -6,13 +6,13 @@
     "configurations": [
         {
             "cwd": "${workspaceFolder}",
-            "executable": "./build/h7_ide.elf",
+            "executable": "./build/Debug/tufo-afm.elf",
             "name": "OpenOCD",
             "request": "launch",
             "type": "cortex-debug",
-            "svdFile": "./STM32H743.svd",
+            "svdFile": "./STM32H723.svd",
             "toolchainPrefix": "arm-none-eabi",
-            "device": "STM32H743VG",
+            "device": "STM32H723VG",
             "servertype": "openocd",
             "configFiles": ["interface/cmsis-dap.cfg", "target/stm32h7x.cfg"],
             "searchDir": [],
@@ -26,13 +26,13 @@
         {
             "name": "PyOCD",
             "cwd": "${workspaceFolder}",
-            "executable": "./build/h7_ide.elf",
+            "executable": "./build/Debug/tufo-afm.elf",
             "request": "launch",
             "type": "cortex-debug",
             "runToEntryPoint": "main",
             "servertype": "pyocd",
-            "svdFile": "./STM32H743.svd",
-            "device": "stm32h743vgtx",
+            "svdFile": "./STM32H723.svd",
+            "device": "stm32h723vgtx",
             "overrideGDBServerStartedRegex": "GDB server listening on port"
             
         }

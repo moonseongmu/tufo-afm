@@ -3,4 +3,4 @@ pack:
 
 probes:
  07000001006500224a0000124e594d48a5a5a5a597969908:
-  target_override:  stm32h742vgtx
+  target_override:  stm32h723vgtx
