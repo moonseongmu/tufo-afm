@@ -18,6 +18,9 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "stm32h723xx.h"
+#include "stm32h7xx_ll_gpio.h"
+#include "stm32h7xx_ll_utils.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -51,6 +54,7 @@
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
 
+void tufo_main(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -102,6 +106,8 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    tufo_main();
+    
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
