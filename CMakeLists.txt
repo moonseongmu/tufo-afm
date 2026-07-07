@@ -43,17 +43,20 @@ target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
 )
 
 # Add sources to executable
-
 set(tufo_sources
     ${CMAKE_CURRENT_SOURCE_DIR}/tufo_core/Src/tufo_main.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/tufo_core/Src/dds.c
 )
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     ${tufo_sources}
 )
 
 # Add include paths
+set(tufo_includes
+    ${CMAKE_CURRENT_SOURCE_DIR}/tufo_core/Inc
+)
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
-    # Add user defined include paths
+    ${tufo_includes}
 )
 
 # Add project symbols (macros)
