@@ -30,8 +30,7 @@ uint32_t freq_to_tuning_word(float frequency, float clock_frequency)
 }
 
 //sine wave of 2^12 values, 12 bit resolution
-static const uint16_t sine_lut[4096] 
-{
+static const uint16_t sine_lut[4096] = {
 2048, 2051, 2054, 2057, 2060, 2063, 2066, 2069,
 2073, 2076, 2079, 2082, 2085, 2088, 2091, 2095,
 2098, 2101, 2104, 2107, 2110, 2113, 2117, 2120,
