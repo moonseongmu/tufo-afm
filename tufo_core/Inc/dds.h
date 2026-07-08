@@ -1,6 +1,14 @@
 #pragma once
 
 #include "main.h"
+#include <stdint.h>
+
+typedef struct 
+{
+    uint32_t phase_accumulator;
+    uint32_t tuning_word;
+    uint16_t value;
+} dds_t;
 
 
 void dds_init(uint32_t start_phase);

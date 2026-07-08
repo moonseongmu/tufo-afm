@@ -54,6 +54,7 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
 # Add include paths
 set(tufo_includes
     ${CMAKE_CURRENT_SOURCE_DIR}/tufo_core/Inc
+    ${CMAKE_CURRENT_SOURCE_DIR}/interface/Inc
 )
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     ${tufo_includes}
