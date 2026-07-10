@@ -2,6 +2,8 @@
 #include <math.h>
 #include "dds.h"
 
+static const uint16_t sine_lut[4096];
+
 //initialise starting waveform phase
 void dds_init(dds_t *dds, uint32_t start_phase)
 {
