@@ -16,7 +16,7 @@ void low_pass_filter(uint32_t *src, uint32_t *dest)
     low_pass_filter_impl();
 }
 
-void rect_to_polar(uint32_t *X, uint32_t *Y, float *modulus, float *phase, uint32_t_block_size)
+void rect_to_polar(uint32_t *X, uint32_t *Y, float *modulus, float *phase, uint32_t block_size)
 {
     rect_to_polar_impl();
 }
