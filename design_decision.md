@@ -11,7 +11,7 @@ if in pll mode
     ->simultaneously, inphasebuffer = adcbuffer2 x cosbuffer2 and quadraturebuffer =  adcbuffer2 x sinbuffer2 
     ->low pass filter both inphase and quadrature buffers
     ->calculate amplitude and phase
-    ->pid loop to find new tuning word 
+    TODO ->pid loop to find new tuning word 
     ->fill new sin and cos buffer 2 
 -> once data finished transfering out, swap buffers and repeat
 
