@@ -47,6 +47,7 @@ set(tufo_sources
     ${CMAKE_CURRENT_SOURCE_DIR}/tufo_core/Src/tufo_main.c
     ${CMAKE_CURRENT_SOURCE_DIR}/tufo_core/Src/dds.c
     ${CMAKE_CURRENT_SOURCE_DIR}/tufo_core/Src/lockin.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/tufo_core/Src/pid.c
 )
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     ${tufo_sources}
