@@ -48,6 +48,7 @@ set(tufo_sources
     ${CMAKE_CURRENT_SOURCE_DIR}/tufo_core/Src/dds.c
     ${CMAKE_CURRENT_SOURCE_DIR}/tufo_core/Src/lockin.c
     ${CMAKE_CURRENT_SOURCE_DIR}/tufo_core/Src/pid.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/tufo_core/Src/freq_sweep.c
 )
 
 set(cmsis_dsp_dir ${CMAKE_CURRENT_SOURCE_DIR}/external/cmsis_dsp)

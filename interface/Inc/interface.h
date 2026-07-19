@@ -2,14 +2,21 @@
 
 #include <stdint.h>
 
+typedef enum active_buffer_t
+{
+    buffer_1,
+    buffer_2
+} active_buffer_t;//buffer used for calculations, not currently being filled by adc/being output by dac
 
 //lockin.c
 void low_pass_filter_impl();
 void rect_to_polar_impl();
 
 
-void timer_1MHz_init(void); //setup 1MHz interrupt rate timer
-void timer_1MHz_ISR(void); //ouptut new tuning fork dac value and read in new tuning fork adc value, calculate new dds tuning word using pid loop, swap buffers if needed
+void block_transfer_init(void); //setup 1MHz interrupt/trigger rate timer, setup dma(if available)
+void block_transfer_start(void); //every 1MHz ouptut new tuning fork dac value and read in new tuning fork adc value, calculate new dds tuning word using pid loop
+void block_transfer_complete_ISR(void); // swap buffers
+void block_transfer_end(void); //stop transfer of data and calculation of pid loop
 
 
 void dac_init(void); //setup dac
