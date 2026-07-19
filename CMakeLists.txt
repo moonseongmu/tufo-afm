@@ -49,8 +49,29 @@ set(tufo_sources
     ${CMAKE_CURRENT_SOURCE_DIR}/tufo_core/Src/lockin.c
     ${CMAKE_CURRENT_SOURCE_DIR}/tufo_core/Src/pid.c
 )
+
+set(cmsis_dsp_dir ${CMAKE_CURRENT_SOURCE_DIR}/external/cmsis_dsp)
+set(cmsis_dsp_sources
+    ${cmsis_dsp_dir}/Source/BasicMathFunctions/BasicMathFunctions.c
+    ${cmsis_dsp_dir}/Source/BayesFunctions/BayesFunctions.c
+    ${cmsis_dsp_dir}/Source/CommonTables/CommonTables.c
+    ${cmsis_dsp_dir}/Source/ComplexMathFunctions/ComplexMathFunctions.c
+    ${cmsis_dsp_dir}/Source/ControllerFunctions/ControllerFunctions.c
+    ${cmsis_dsp_dir}/Source/DistanceFunctions/DistanceFunctions.c
+    ${cmsis_dsp_dir}/Source/FastMathFunctions/FastMathFunctions.c
+    ${cmsis_dsp_dir}/Source/FilteringFunctions/FilteringFunctions.c
+    ${cmsis_dsp_dir}/Source/InterpolationFunctions/InterpolationFunctions.c
+    ${cmsis_dsp_dir}/Source/MatrixFunctions/MatrixFunctions.c
+    ${cmsis_dsp_dir}/Source/QuaternionMathFunctions/QUaternionMathFunctions.c
+    ${cmsis_dsp_dir}/Source/StatisticsFunctions/StatisticsFunctions.c
+    ${cmsis_dsp_dir}/Source/SupportFunctions/SupportFunctions.c
+    ${cmsis_dsp_dir}/Source/SVMFunctions/SVMFunctions.c
+    ${cmsis_dsp_dir}/Source/TransformFunctions/TransformFunctions.c
+    ${cmsis_dsp_dir}/Source/WindowFunctions/WindowFunctions.c
+)
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     ${tufo_sources}
+    ${cmsis_dsp_sources}
 )
 
 # Add include paths
@@ -58,8 +79,14 @@ set(tufo_includes
     ${CMAKE_CURRENT_SOURCE_DIR}/tufo_core/Inc
     ${CMAKE_CURRENT_SOURCE_DIR}/interface/Inc
 )
+
+set(cmsis_dsp_includes
+    ${cmsis_dsp_dir}/Include 
+    ${cmsis_dsp_dir}/PrivateInclude 
+)
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     ${tufo_includes}
+    ${cmsis_dsp_includes}
 )
 
 # Add project symbols (macros)

@@ -17,7 +17,7 @@ void reset_pid(pid_controller *pid)
     pid->derivative = 0.0f;
     pid->prev_error = 0.0f;
     pid->prev_measurement = 0.0f;
-    pid->output = 0.0f
+    pid->output = 0.0f;
 
 }
 

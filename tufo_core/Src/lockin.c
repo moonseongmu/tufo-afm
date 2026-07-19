@@ -32,8 +32,8 @@ void lock_in(uint16_t *sin_buffer, uint16_t *cos_buffer, uint16_t *signal_buffer
     mult_array(cos_buffer, signal_buffer, in_phase_buffer, block_size);
     mult_array(sin_buffer, signal_buffer, quadrature_buffer, block_size);
 
-    low_pass_filter(in_phase_buffer, X_buffer);
-    low_pass_filter(quadrature_buffer, Y_buffer);
+    low_pass_filter(in_phase_buffer, X_buffer, block_size);
+    low_pass_filter(quadrature_buffer, Y_buffer, block_size);
 
     rect_to_polar(X_buffer, Y_buffer, amplitude_buffer, phase_buffer, block_size);
 
