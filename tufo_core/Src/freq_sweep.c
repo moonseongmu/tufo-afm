@@ -1,18 +1,6 @@
 #include "freq_sweep.h"
-#include "dds.h"
-#include "interface.h"
-#include "lockin.h"
-#include <stdbool.h>
 
-struct sweep_settings
-{
-    float start_freq;
-    float end_freq;
-    float step_size;
-    float prev_amplitude;
-};
-
-void set_sweep_settings(sweep_settings *settings, float start_freq, float end_freq, float step)
+void set_sweep_settings(sweep_settings_t *settings, float start_freq, float end_freq, float step)
 {
     settings->prev_amplitude = 0;
     settings->start_freq = start_freq;
@@ -20,17 +8,42 @@ void set_sweep_settings(sweep_settings *settings, float start_freq, float end_fr
     settings->step_size = step;
 }
 
-void start_sweep(sweep_settings *settings)
+void start_oscillations(sweep_settings_t *settings, dds_t *sin_dds, dds_t *cos_dds)
 {
-    dds_t *dds;
+    //start timer and dma to adc and dac, interrupt calls when buffer filled/finished outputing
     block_transfer_init();
+    //init cosdds with sweep starting frequency + starting phase 0
+    cos_dds->tuning_word = freq_to_tuning_word(settings->start_freq, settings->clock_freq);
+    cos_dds->phase_accumulator = 0;
+
+    //init sindds with sweep starting frequency + starting phase 90
+    sin_dds->tuning_word = freq_to_tuning_word(settings->start_freq, settings->clock_freq);
+    sin_dds->phase_accumulator = 1073741824; //(2^32-1)/4
+
     block_transfer_start();
-    dds_init(dds, 0);
-    bool sweep_done = false;
-
-    while(sweep_done == false)
+    
+    for(int i = 0; i < 6; i++ )
     {
-        switch(active)
+        fill_sin_cos_buffers();
     }
+}
 
+void fill_sin_cos_buffers(dds_t *sin_dds, dds_t *cos_dds, uint32_t block_size, active_buffer_t *active_buffer,
+    uint16_t *sin_buf_1, uint16_t *sin_buf_2, 
+    uint16_t *cos_buf_1, uint16_t *cos_buf_2)
+{
+    for (uint32_t i=0; i<block_size; i++)
+    {
+        dds_calculate(sin_dds);
+        dds_calculate(cos_dds);
+        switch (*active_buffer)
+        {
+            case buffer_1:
+                cos_buf_1[i] = cos_dds->value;
+                sin_buf_1[i] = sin_dds->value;
+            case buffer_2:
+                cos_buf_2[i] = cos_dds->value;
+                sin_buf_2[i] = sin_dds->value;
+        }
+    }
 }

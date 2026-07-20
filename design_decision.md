@@ -59,7 +59,7 @@ main while(1)
             start_oscillations(start_freq_tuning_word)
             bool sweep_complete = flase
             prevampl = 0
-            while(sweep_complete == false)
+            while(sweep_complete == false && buffer_swapped == true)
             {
                 lockin()
                 if abs(prevampl-ampl) < tolerance
@@ -69,6 +69,7 @@ main while(1)
                 }
 
                 fillsincosbuffers()
+                buffer_swapped = false
 
                 if dds->tuningword >= freq_end_tuning_word
                 {
@@ -78,6 +79,11 @@ main while(1)
 
             end_oscillations()
             state= state_idle
+            break
+
+        case(state_acquire):
+            break
+
 
     }
 }
@@ -107,20 +113,7 @@ start_oscillations()
     init cosdds with sweep starting frequency + starting phase 0
     for(int i = 0; i < 6; i++ )
     {
-        for int i=0; i<blocksize; i++
-        {
-            sindds_val = dds_calculate(sindds)
-            cosdds_val = dds_calculate(cosdds)
-            switch (active_buffer)
-            {
-                case buffer1:
-                    cosbuf1[i] = cosdds_val
-                    sinbuf1[i] = sindds_val
-                case buffer2:
-                    cosbuf2[i] = cosdds_val
-                    sinbuf2[i] = sindds_val
-            }
-        }
+        fillsincosbuffers()
     }
 }
 
@@ -132,6 +125,8 @@ block_transfer_finished_isr
     } else {
         active_buffer = buf1
     }
+
+    buffer_swapped = true
 }
 
 ```
