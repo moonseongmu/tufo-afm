@@ -1,9 +1,9 @@
 #pragma once
 
-#include "tufo_main.h"
 #include "dds.h"
 #include "interface.h"
 #include "lockin.h"
+#include "oscillator.h"
 #include <stdbool.h>
 #include <stdint.h>
 
