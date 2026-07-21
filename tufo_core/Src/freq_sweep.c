@@ -8,7 +8,9 @@ void set_sweep_settings(sweep_settings_t *settings, float start_freq, float end_
     settings->step_size = step;
 }
 
-void start_oscillations(sweep_settings_t *settings, dds_t *sin_dds, dds_t *cos_dds)
+void start_oscillations(sweep_settings_t *settings, dds_t *sin_dds, dds_t *cos_dds, uint32_t block_size, active_buffer_t *active_buffer,
+    uint16_t *sin_buf_1, uint16_t *sin_buf_2, 
+    uint16_t *cos_buf_1, uint16_t *cos_buf_2)
 {
     //start timer and dma to adc and dac, interrupt calls when buffer filled/finished outputing
     block_transfer_init();
@@ -24,7 +26,7 @@ void start_oscillations(sweep_settings_t *settings, dds_t *sin_dds, dds_t *cos_d
     
     for(int i = 0; i < 6; i++ )
     {
-        fill_sin_cos_buffers();
+        fill_sin_cos_buffers(sin_dds, cos_dds, block_size, active_buffer, sin_buf_1, sin_buf_2, cos_buf_1, cos_buf_2);
     }
 }
 
