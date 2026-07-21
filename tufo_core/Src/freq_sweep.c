@@ -8,7 +8,7 @@ void set_sweep_settings(sweep_settings_t *settings, float start_freq, float end_
     settings->step_size = step;
 }
 
-void start_oscillations(sweep_settings_t *settings, dds_t *sin_dds, dds_t *cos_dds, uint32_t block_size, active_buffer_t *active_buffer,
+void start_oscillations(sweep_settings_t *settings, dds_t *sin_dds, dds_t *cos_dds, uint32_t block_size, active_buffer_t active_buffer,
     uint16_t *sin_buf_1, uint16_t *sin_buf_2, 
     uint16_t *cos_buf_1, uint16_t *cos_buf_2)
 {
@@ -30,7 +30,7 @@ void start_oscillations(sweep_settings_t *settings, dds_t *sin_dds, dds_t *cos_d
     }
 }
 
-void fill_sin_cos_buffers(dds_t *sin_dds, dds_t *cos_dds, uint32_t block_size, active_buffer_t *active_buffer,
+void fill_sin_cos_buffers(dds_t *sin_dds, dds_t *cos_dds, uint32_t block_size, active_buffer_t active_buffer,
     uint16_t *sin_buf_1, uint16_t *sin_buf_2, 
     uint16_t *cos_buf_1, uint16_t *cos_buf_2)
 {
@@ -38,7 +38,7 @@ void fill_sin_cos_buffers(dds_t *sin_dds, dds_t *cos_dds, uint32_t block_size, a
     {
         dds_calculate(sin_dds);
         dds_calculate(cos_dds);
-        switch (*active_buffer)
+        switch (active_buffer)
         {
             case buffer_1:
                 cos_buf_1[i] = cos_dds->value;
