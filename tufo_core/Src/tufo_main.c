@@ -23,31 +23,6 @@ void tufo_main(void)
     state_t state = STATE_IDLE;
     command_t command = NONE;
 
-    /*
-    sweep_settings_t sweep_settings = {.sweep_complete = false};
-    
-    active_buffer_t active_buffer = buffer_1;
-
-    bool buffers_swapped = false;
-
-    dds_t sin_dds;
-    dds_t cos_dds;
-
-    uint16_t sin_buffer_1[BLOCK_SIZE];
-    uint16_t sin_buffer_2[BLOCK_SIZE];
-    uint16_t cos_buffer_1[BLOCK_SIZE];
-    uint16_t cos_buffer_2[BLOCK_SIZE];
-    uint16_t adc_in_buffer_1[BLOCK_SIZE];
-    uint16_t adc_in_buffer_2[BLOCK_SIZE];
-    float amplitude_buffer_1[BLOCK_SIZE];
-    float amplitude_buffer_2[BLOCK_SIZE];
-    float phase_buffer_1[BLOCK_SIZE];
-    float phase_buffer_2[BLOCK_SIZE];
-
-    uint32_t osc_init_counter = 0;
-
-    */
-
     sweep_settings_t sweep_settings = {.sweep_complete = false};
 
     oscillator_t oscillator = {.init_counter = 0, .buffers_swapped = false, 
