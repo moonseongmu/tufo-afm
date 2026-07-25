@@ -1,5 +1,3 @@
-#include <stdint.h>
-#include <math.h>
 #include "dds.h"
 
 static const uint16_t sine_lut[4096];
@@ -26,7 +24,7 @@ void dds_update_tuning_word(dds_t *dds, uint32_t tuning_word)
 //calculates necessary tuning word from desired frequency and dac output rate clock
 uint32_t freq_to_tuning_word(float frequency, float clock_frequency)
 {
-    float tuning_word_float = (frequency/clock_frequency)*powf(2.0f, 32.0f);
+    float tuning_word_float = (frequency/clock_frequency)*pow(2.0f, 32.0f);
     uint32_t tuning_word = (uint32_t) tuning_word_float;
     return tuning_word;
 }

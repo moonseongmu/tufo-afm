@@ -74,7 +74,7 @@ void continue_oscillations(sweep_settings_t *settings, oscillator_t *oscillator,
             break;
     }
     
-    if(fabsf(amplitude_avg - settings->prev_amplitude) < settings->max_epsilon)
+    if(fabs(amplitude_avg - settings->prev_amplitude) < settings->max_epsilon)
     {
         //amplitude has stabilised, move tuning word to next step
         settings->current_freq += settings->step_size;

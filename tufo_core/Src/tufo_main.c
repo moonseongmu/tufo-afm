@@ -1,7 +1,4 @@
 #include "tufo_main.h"
-#include "oscillator.h"
-#include <stdbool.h>
-#include <stdint.h>
 
 typedef enum state_t
 {

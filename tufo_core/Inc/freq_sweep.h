@@ -6,7 +6,7 @@
 #include "oscillator.h"
 #include <stdbool.h>
 #include <stdint.h>
-#include <math.h>
+#include <tgmath.h>
 
 typedef struct sweep_settings_t
 {
