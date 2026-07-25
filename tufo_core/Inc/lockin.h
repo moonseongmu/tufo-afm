@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdint.h>
+#include "interface.h"
 
 void mult_array(uint16_t *src_1, uint16_t *src_2, uint32_t *dest, uint32_t block_size);
 void low_pass_filter(uint32_t *src, uint32_t *dest, uint32_t block_size);

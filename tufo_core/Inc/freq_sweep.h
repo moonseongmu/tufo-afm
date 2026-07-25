@@ -21,20 +21,6 @@ typedef struct sweep_settings_t
 } sweep_settings_t;
 
 void fill_sin_cos_buffers(dds_t *sin_dds, dds_t *cos_dds, uint32_t block_size, uint16_t *sin_buf, uint16_t *cos_buf);
-void start_oscillations(sweep_settings_t *settings, 
-    dds_t *sin_dds, dds_t *cos_dds, 
-    uint32_t block_size, active_buffer_t active_buffer, uint32_t *counter, bool buffers_swapped,
-    uint16_t *sin_buf_1, uint16_t *sin_buf_2, 
-    uint16_t *cos_buf_1, uint16_t *cos_buf_2, 
-    uint16_t *sig_buf_1, uint16_t *sig_buf_2,
-    float *ampl_buf_1, float *ampl_buf_2, 
-    float *phase_buf_1, float *phase_buf_2);
-    void continue_oscillations(sweep_settings_t *settings, 
-    dds_t *sin_dds, dds_t *cos_dds, 
-    uint32_t block_size, active_buffer_t active_buffer, bool buffers_swapped,
-    uint16_t *sin_buf_1, uint16_t *sin_buf_2, 
-    uint16_t *cos_buf_1, uint16_t *cos_buf_2, 
-    uint16_t *sig_buf_1, uint16_t *sig_buf_2,
-    float *ampl_buf_1, float *ampl_buf_2, 
-    float *phase_buf_1, float *phase_buf_2);
+void start_oscillations(sweep_settings_t *settings, oscillator_t *oscillator, uint32_t block_size);
+void continue_oscillations(sweep_settings_t *settings, oscillator_t *oscillator, uint32_t block_size);
 void set_sweep_settings(sweep_settings_t *settings, float start_freq, float end_freq, float step, float max_epsilon);

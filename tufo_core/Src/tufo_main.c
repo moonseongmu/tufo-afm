@@ -1,5 +1,6 @@
 #include "tufo_main.h"
 #include "oscillator.h"
+#include <stdbool.h>
 #include <stdint.h>
 
 typedef enum state_t
@@ -25,6 +26,7 @@ void tufo_main(void)
     state_t state = STATE_IDLE;
     command_t command = NONE;
 
+    /*
     sweep_settings_t sweep_settings = {.sweep_complete = false};
     
     active_buffer_t active_buffer = buffer_1;
@@ -47,6 +49,13 @@ void tufo_main(void)
 
     uint32_t osc_init_counter = 0;
 
+    */
+
+    sweep_settings_t sweep_settings = {.sweep_complete = false};
+
+    oscillator_t oscillator = {.init_counter = 0, .buffers_swapped = false, 
+                                .active_buffer = buffer_1};
+
     while(1)
     {
         switch(state)
@@ -57,10 +66,10 @@ void tufo_main(void)
                 {
                     state = STATE_SWEEP_INIT;
                 }
-                if(buffers_swapped == true && sweep_settings.sweep_complete == false)
+                if(oscillator.buffers_swapped == true && sweep_settings.sweep_complete == false)
                 {
                     state = STATE_FREQ_SWEEP;
-                } else if(buffers_swapped == true && sweep_settings.sweep_complete == true)
+                } else if(oscillator.buffers_swapped == true && sweep_settings.sweep_complete == true)
                 {
                     state = STATE_SWEEP_STOP;
                 }
@@ -68,25 +77,13 @@ void tufo_main(void)
 
             case STATE_SWEEP_INIT:
                 set_sweep_settings(&sweep_settings, 32677, 32679, 0.1, 0.1);
-                start_oscillations(&sweep_settings, &sin_dds, &cos_dds, 
-                    BLOCK_SIZE, active_buffer, &osc_init_counter, buffers_swapped, 
-                    sin_buffer_1, sin_buffer_2, 
-                    cos_buffer_1, cos_buffer_2, 
-                    adc_in_buffer_1, adc_in_buffer_2, 
-                    amplitude_buffer_1, amplitude_buffer_2, 
-                    phase_buffer_1, phase_buffer_2);
+                start_oscillations(&sweep_settings, &oscillator, BLOCK_SIZE);
                 sweep_settings.sweep_complete = false;
                 state = STATE_IDLE;
                 break;
 
             case STATE_FREQ_SWEEP:
-                continue_oscillations(&sweep_settings, &sin_dds, &cos_dds, 
-                    BLOCK_SIZE, active_buffer, buffers_swapped,
-                    sin_buffer_1, sin_buffer_2,
-                    cos_buffer_1, cos_buffer_2,
-                    adc_in_buffer_1, adc_in_buffer_2, 
-                    amplitude_buffer_1, amplitude_buffer_2,
-                    phase_buffer_1, phase_buffer_2);
+                continue_oscillations(&sweep_settings, &oscillator, BLOCK_SIZE);
                 break;
 
             case STATE_SWEEP_STOP:
