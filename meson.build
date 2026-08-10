@@ -28,7 +28,6 @@ inc=include_directories('tufo_core/Inc',
 'interface/Inc',
 )
 
-
 #ST src and inc
 st_inc=include_directories('Core/Inc',
 'Drivers/STM32H7xx_HAL_Driver/Inc',
