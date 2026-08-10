@@ -28,11 +28,14 @@ inc=include_directories('tufo_core/Inc',
 'interface/Inc',
 )
 
+#CMSIS Inc
+cmsis_inc=include_directories('CMSIS/Core/Include')
+
+
 #ST src and inc
 st_inc=include_directories('Core/Inc',
 'Drivers/STM32H7xx_HAL_Driver/Inc',
-'Drivers/CMSIS/Device/ST/STM32H7xx/Include',
-'Drivers/CMSIS/Include',
+'Drivers/CMSIS/Device/ST/STM32H7xx/Include'
 )
 
 src+=['Core/Src/main.c',
@@ -98,12 +101,12 @@ src+=['external/cmsis_dsp/Source/BasicMathFunctions/BasicMathFunctions.c',
 'external/cmsis_dsp/Source/WindowFunctions/WindowFunctions.c']
 
 dsp_inc=include_directories('external/cmsis_dsp/Include',
-'external\cmsis_dsp\PrivateInclude')
+'external/cmsis_dsp/PrivateInclude')
 
 #build executable
 executable(meson.project_name(),
 src,
-include_directories: [inc, st_inc, freertos_inc, dsp_inc],
+include_directories: [inc, cmsis_inc, dsp_inc, st_inc, freertos_inc],
 name_suffix: 'elf',
 c_args: c_args,
 link_args: c_link_args
